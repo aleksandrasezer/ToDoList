@@ -6,3 +6,12 @@
 .App > div {
   margin-right: 50px;
 }
+.isDone {
+  opacity: 0.5;
+}
+.activeFilter {
+  background-color: mediumslateblue;
+}
+.error {
+  border: 2px solid red;
+}

@@ -29,7 +29,6 @@ function App() {
         //Хэй, обновись!->>
         setTasks(filteredTasks) //Реагирует только на обновление нового массива
     }
-
     function addTask(title: string) {
         const newTask: TaskType = {
             id: v1(),
@@ -38,7 +37,9 @@ function App() {
         }
         setTasks([newTask,...tasks])
     }
-
+    function changeTaskStatus(taskId: string, newIsDoneValue: boolean) {
+        setTasks(tasks.map(t => t.id === taskId ? {...t, isDone: newIsDoneValue} : t))
+    }
     function changeFilter(value: FilterValuesType) {
         setFilter(value)
     }
@@ -58,6 +59,8 @@ function App() {
     return (
         <div className="App">
             <ToDoList
+                changeTaskStatus={changeTaskStatus}
+                filter={filter}
                 title='Tasks to Learn'
                 tasks={getTasksForTodoList()}
                 addTask={addTask}
