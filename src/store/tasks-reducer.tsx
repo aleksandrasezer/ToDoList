@@ -1,7 +1,10 @@
 import {TaskStateType, TaskType} from "../App";
 import {v1} from "uuid";
+import {AddTodoListAT, RemoveTodoListAT} from "./todolists-reducer";
 
-export type ActionType = RemoveTaskAT | AddTaskAT | ChangeTaskStatusAT | ChangeTaskTitleAT
+export type ActionType = RemoveTaskAT | AddTaskAT |
+    ChangeTaskStatusAT | ChangeTaskTitleAT | AddTodoListAT |
+    RemoveTodoListAT
 
 type RemoveTaskAT = {
     type: 'REMOVE_TASK'
@@ -27,11 +30,11 @@ type ChangeTaskTitleAT = {
 
 }
 
-
 export const tasksReducer = (state: TaskStateType, action: ActionType): TaskStateType => {
         switch (action.type) {
             case 'REMOVE_TASK':
                 return {...state, [action.todoListId]: state[action.todoListId].filter(t => t.id !== action.taskId)}
+
             case 'ADD_TASK':
                 const newTask: TaskType = {
                     id: v1(),
@@ -39,10 +42,23 @@ export const tasksReducer = (state: TaskStateType, action: ActionType): TaskStat
                     isDone: false
                 }
                 return {...state, [action.todoListId]: [newTask, ...state[action.todoListId]]}
+
             case 'CHANGE_TASK_STATUS':
-                return {...state, [action.todoListId]: state[action.todoListId].map(t => t.id === action.taskId ? {...t, isDone: action.newIsDoneValue} : t)}
+                return {...state, [action.todoListId]: state[action.todoListId].map(t =>
+                        t.id === action.taskId ? {...t, isDone: action.newIsDoneValue} : t)}
+
             case 'CHANGE_TASK_TITLE':
-                return {...state, [action.todoListId]: state[action.todoListId].map(t => t.id === action.taskId ? {...t, title: action.newTitle} : t)}
+                return {...state, [action.todoListId]: state[action.todoListId].map(t =>
+                        t.id === action.taskId ? {...t, title: action.newTitle} : t)}
+
+            case 'ADD_TODOLIST':
+                return {...state, [action.todoListId]: []}
+
+            case 'REMOVE_TODOLIST':
+                const stateCopy = {...state}
+                delete stateCopy[action.todoListId]
+                return stateCopy
+
             default:
                 return {...state}
         }
