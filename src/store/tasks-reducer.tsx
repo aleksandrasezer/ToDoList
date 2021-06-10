@@ -1,6 +1,6 @@
-import {TaskStateType, TaskType} from "../App";
 import {v1} from "uuid";
 import {AddTodoListAT, RemoveTodoListAT, todoListId_1, todoListId_2} from "./todolists-reducer";
+import {TaskStateType, TaskType} from "../AppWithRedux";
 
 export type TasksActionType = RemoveTaskAT | AddTaskAT |
     ChangeTaskStatusAT | ChangeTaskTitleAT | AddTodoListAT |
