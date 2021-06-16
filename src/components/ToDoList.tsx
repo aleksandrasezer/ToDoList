@@ -35,9 +35,7 @@ export const ToDoList = React.memo(function (props: ToDoListPropsType) {
 
     const {filter} = props
     const tasksJSXElements = tasksForTodo.map(t => <Task key={t.id}
-                                                         title={t.title}
-                                                         taskId={t.id}
-                                                         isDone={t.isDone}
+                                                         task={t}
                                                          todoListId={props.todoListId}
                                                          addTask={props.addTask}
                                                          removeTask={props.removeTask}
