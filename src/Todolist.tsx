@@ -5,7 +5,7 @@ import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task'
 import {TaskStatuses, TaskType} from './api/todolists-api'
-import {FilterValuesType} from './state/todolists-reducer'
+import {deleteTodolistThunk, FilterValuesType, updateTodolistTitleThunk} from './state/todolists-reducer'
 import {fetchTasksTC} from "./state/tasks-reducer";
 import {useDispatch} from "react-redux";
 
@@ -18,7 +18,6 @@ type PropsType = {
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     removeTask: (taskId: string, todolistId: string) => void
-    removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
 
@@ -38,10 +37,10 @@ export const Todolist = React.memo(function (props: PropsType) {
     }, [props.addTask, props.id])
 
     const removeTodolist = () => {
-        props.removeTodolist(props.id)
+        dispatch(deleteTodolistThunk(props.id))
     }
     const changeTodolistTitle = useCallback((title: string) => {
-        props.changeTodolistTitle(props.id, title)
+        updateTodolistTitleThunk(props.id, title)
     }, [props.id, props.changeTodolistTitle])
 
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.id, props.changeFilter])

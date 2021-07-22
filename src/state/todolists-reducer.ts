@@ -105,7 +105,30 @@ export const fetchTodolistsThunk = () => (dispatch: Dispatch) => {
             dispatch(setTodolistsAC(resp.data))
         })
 }
-
+export const deleteTodolistThunk = (todolistId: string) => (dispatch: Dispatch) => {
+    todolistsAPI.deleteTodolist(todolistId)
+        .then((resp) => {
+            if (resp.data.resultCode === 0) {
+                dispatch(removeTodolistAC(todolistId))
+            }
+        })
+}
+export const createTodolistThunk = (title: string) => (dispatch: Dispatch) => {
+    todolistsAPI.createTodolist(title)
+        .then(resp => {
+            if (resp.data.resultCode === 0) {
+                dispatch(addTodolistAC(title))
+            }
+        })
+}
+export const updateTodolistTitleThunk = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    todolistsAPI.updateTodolist(todolistId, title)
+        .then(resp => {
+            if (resp.data.resultCode === 0) {
+                dispatch(changeTodolistTitleAC(todolistId, title))
+            }
+        })
+}
 
 
 

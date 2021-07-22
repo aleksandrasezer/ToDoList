@@ -5,11 +5,9 @@ import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
-    addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolistsThunk,
+    changeTodolistTitleAC, createTodolistThunk, fetchTodolistsThunk,
     FilterValuesType,
-    removeTodolistAC,
     TodolistDomainType
 } from './state/todolists-reducer'
 import {
@@ -61,19 +59,13 @@ function App() {
         dispatch(action);
     }, []);
 
-    const removeTodolist = useCallback(function (id: string) {
-        const action = removeTodolistAC(id);
-        dispatch(action);
-    }, []);
-
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
         const action = changeTodolistTitleAC(id, title);
         dispatch(action);
     }, []);
 
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
+        dispatch(createTodolistThunk(title));
     }, [dispatch]);
 
     return (
@@ -109,7 +101,6 @@ function App() {
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
                                         filter={tl.filter}
-                                        removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
