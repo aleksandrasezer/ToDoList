@@ -1,3 +1,8 @@
+.App {
+    background-image: url('../assets/images/light_back.jpg');
+    background-repeat: no-repeat;
+    background-color: white;
+}
 /*
 .App {
   padding: 30px;

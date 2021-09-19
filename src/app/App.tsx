@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core'
+import {AppBar, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useSelector} from "react-redux";
@@ -15,15 +15,14 @@ function App() {
     return (
         <div className="App">
 
-            <AppBar position="static">
+            <AppBar position="static" style={{ background: 'green' }}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        News
+                        {'Todo-lists'}
                     </Typography>
-                    <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
 
