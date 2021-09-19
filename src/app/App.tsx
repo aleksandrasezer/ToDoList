@@ -1,40 +1,50 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
-import {AppBar, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core'
-import {Menu} from '@material-ui/icons'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
-import {useSelector} from "react-redux";
+import {Container, LinearProgress} from '@material-ui/core'
+import {TodoLists} from '../features/TodolistsList/TodolistsList'
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
-import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
+import {CustomAppBar} from "../components/CustomAppBar/CustomAppBar";
+import {authMe} from "./app-reducer";
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {Login} from "../components/Login/Login";
 
 function App() {
 
-    const status = useSelector<AppRootStateType, RequestStatusType>((state: AppRootStateType) => state.app.status)
+    const {status, isInitialized} = useSelector((state: AppRootStateType) => state.app)
+    const isLoggedIn = useSelector((state: AppRootStateType) => state.auth.isLoggedIn)
+    const dispatch = useDispatch()
 
-    return (
-        <div className="App">
+    useEffect(() => {
+        dispatch(authMe())
+    }, [])
 
-            <AppBar position="static" style={{ background: 'green' }}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        {'Todo-lists'}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+    if (!isInitialized) {
+        return <LinearProgress color="secondary"/>
+    } else {
+        return (
+            <div className="App">
 
-            {status === 'loading' && <LinearProgress color="secondary" />}
-            <Container fixed>
-                <TodolistsList/>
-            </Container>
+                <CustomAppBar isLoggedIn={isLoggedIn}/>
+                {status === 'loading' && <LinearProgress color="secondary"/>}
 
-            <ErrorSnackbar />
+                <Container fixed>
+                    <HashRouter>
+                        <Switch>
+                            <Route exact path={"/"} render={() => <TodoLists/>}/>
+                            <Route path={"/login"} render={() => <Login />}/>
+                            <Route path={"/404"} render={() => <h1>404 залупа</h1>}/>
+                            <Redirect from={"*"} to={"/404"}/>
+                        </Switch>
+                    </HashRouter>
+                </Container>
 
-        </div>
-    )
+                <ErrorSnackbar/>
+
+            </div>
+        )
+    }
 }
 
 export default App

@@ -44,7 +44,7 @@ export const AddItemForm = React.memo(function(props: AddItemFormPropsType) {
                    helperText={error}
         />
         <IconButton style={{ color: 'green' }} onClick={addItem}>
-            <AddBox />
+            <AddBox fontSize='large' />
         </IconButton>
     </div>
 })
