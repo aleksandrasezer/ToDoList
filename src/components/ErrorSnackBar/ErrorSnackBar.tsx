@@ -25,8 +25,8 @@ export function ErrorSnackbar() {
 
     return (
         <Snackbar open={error !== null} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error">
-                This is a success message!
+            <Alert onClose={handleClose} severity="success">
+                {error}
             </Alert>
         </Snackbar>
     )
