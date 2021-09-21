@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/auth-api";
-import {setIsLoggedIn} from "../auth/auth-reducer";
+import {setIsLoggedIn} from "./auth-reducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -37,11 +37,10 @@ export const authMe = () => async (dispatch: Dispatch) => {
         if (response.data.resultCode === 0) {
             dispatch(setIsLoggedIn(true))
         } else {
-
+            dispatch(setAppErrorAC(response.data.messages[0]))
         }
         dispatch(setIsInitializedAC(true))
     } catch (error) {
-        setAppErrorAC('authorization error')
         dispatch(setIsInitializedAC(true))
     }
 }

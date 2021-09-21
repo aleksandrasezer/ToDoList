@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/auth-api";
-import {setAppStatusAC} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
 
 const initialState = {
@@ -8,7 +8,6 @@ const initialState = {
 }
 
 type InitStateType = typeof initialState
-type ActionsType = ReturnType<typeof setIsLoggedIn>
 
 export const authReducer = (state: InitStateType = initialState, action: ActionsType): InitStateType => {
     switch (action.type) {
@@ -32,4 +31,24 @@ export const logOut = () => async (dispatch: Dispatch) => {
     } else {
         dispatch(setAppStatusAC('failed'))
     }
+}
+export const logIn = (values: UserLoginData) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    const login = await authAPI.login(values.email,values.password,values.rememberMe)
+    if (login.data.resultCode === 0) {
+        dispatch(setIsLoggedIn(true))
+        dispatch(setAppStatusAC('succeeded'))
+    } else {
+        dispatch(setAppErrorAC(login.data.messages[0]))
+        dispatch(setAppStatusAC('failed'))
+    }
+}
+
+//types
+type ActionsType = ReturnType<typeof setIsLoggedIn>
+
+export type UserLoginData = {
+    email: string
+    password: string
+    rememberMe: boolean
 }

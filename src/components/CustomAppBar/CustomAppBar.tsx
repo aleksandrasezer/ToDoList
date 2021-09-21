@@ -3,7 +3,7 @@ import {Menu} from "@material-ui/icons";
 import React, {useCallback} from "react";
 import s from './CustomAppBar.module.css'
 import {useDispatch} from "react-redux";
-import {logOut} from "../../auth/auth-reducer";
+import {logOut} from "../../store/auth-reducer";
 
 
 export const CustomAppBar = (props: CustomAppBarPropsType) => {

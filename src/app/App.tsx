@@ -3,12 +3,13 @@ import './App.css'
 import {Container, LinearProgress} from '@material-ui/core'
 import {TodoLists} from '../features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store";
+import {AppRootStateType} from "../store/store";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {CustomAppBar} from "../components/CustomAppBar/CustomAppBar";
-import {authMe} from "./app-reducer";
+import {authMe} from "../store/app-reducer";
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from "../components/Login/Login";
+import {Loader} from "../components/Loader/Loader";
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
     }, [])
 
     if (!isInitialized) {
-        return <LinearProgress color="secondary"/>
+        return <Loader />
     } else {
         return (
             <div className="App">
@@ -29,16 +30,19 @@ function App() {
                 <CustomAppBar isLoggedIn={isLoggedIn}/>
                 {status === 'loading' && <LinearProgress color="secondary"/>}
 
-                <Container fixed>
-                    <HashRouter>
-                        <Switch>
-                            <Route exact path={"/"} render={() => <TodoLists/>}/>
-                            <Route path={"/login"} render={() => <Login />}/>
-                            <Route path={"/404"} render={() => <h1>404 залупа</h1>}/>
-                            <Redirect from={"*"} to={"/404"}/>
-                        </Switch>
-                    </HashRouter>
-                </Container>
+                {isLoggedIn ?
+                    <Container fixed>
+                        <HashRouter>
+                            <Switch>
+                                <Route exact path={"/"} render={() => <TodoLists/>}/>
+                                <Route path={"/login"} render={() => <Login/>}/>
+                                <Route path={"/404"} render={() => <h1>404 залупа</h1>}/>
+                                <Redirect from={"*"} to={"/404"}/>
+                            </Switch>
+                        </HashRouter>
+                    </Container>
+                    : <Login />
+                }
 
                 <ErrorSnackbar/>
 

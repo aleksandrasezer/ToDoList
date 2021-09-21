@@ -1,0 +1,9 @@
+.loginContainer {
+    max-width: 400px;
+    height: 240px;
+    margin-top: 50px;
+    text-align: center;
+}
+.formItem {
+    padding-bottom: 20px;
+}
