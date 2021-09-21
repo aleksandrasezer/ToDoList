@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {RequestStatusType} from "../store/app-reducer";
+import {FilterValuesType} from "../store/todolists-reducer";
 
 const settings = {
     withCredentials: true,
@@ -45,6 +47,8 @@ export type TodolistType = {
     title: string
     addedDate: string
     order: number
+    status: RequestStatusType
+    filter: FilterValuesType
 }
 export type ResponseType<D = {}> = {
     resultCode: number

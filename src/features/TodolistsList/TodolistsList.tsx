@@ -8,16 +8,15 @@ import {
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
-    TodolistDomainType
 } from '../../store/todolists-reducer'
 import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from '../../store/tasks-reducer'
-import {TaskStatuses} from '../../api/todolists-api'
+import {TaskStatuses, TodolistType} from '../../api/todolists-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 
 export const TodoLists: React.FC = () => {
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
@@ -79,14 +78,12 @@ export const TodoLists: React.FC = () => {
                     return <Grid item key={tl.id}>
                         <Paper style={{padding: '10px'}}>
                             <Todolist
-                                id={tl.id}
-                                title={tl.title}
+                                tl={tl}
                                 tasks={allTodolistTasks}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 changeTaskStatus={changeStatus}
-                                filter={tl.filter}
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
