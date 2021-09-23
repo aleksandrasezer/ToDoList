@@ -26,9 +26,9 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 }
 
 //action creators
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const )
-export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-IS-INITIALIZED', isInitialized} as const )
-export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const )
+export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
+export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-IS-INITIALIZED', isInitialized} as const)
+export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 
 //thunk
 export const authMe = () => async (dispatch: Dispatch) => {
@@ -45,7 +45,10 @@ export const authMe = () => async (dispatch: Dispatch) => {
     }
 }
 
+//types
+export type SetAppStatusAT = ReturnType<typeof setAppStatusAC>
+export type SetAppErrorAT = ReturnType<typeof setAppErrorAC>
+
 type ActionsType =
-    ReturnType<typeof setAppStatusAC>
-    | ReturnType<typeof setAppErrorAC>
+    SetAppStatusAT | SetAppErrorAT
     | ReturnType<typeof setIsInitializedAC>

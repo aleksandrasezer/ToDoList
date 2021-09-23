@@ -2,33 +2,33 @@ import React, {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from '../../store/store'
 import {
-    addTodolistTC,
-    changeTodolistFilterAC,
-    changeTodolistTitleTC,
-    fetchTodolistsTC,
+    addTodoListTC,
+    changeTodoListFilterAC,
+    changeTodoListTitleTC,
+    fetchTodoListsTC,
     FilterValuesType,
-    removeTodolistTC,
+    removeTodoListTC,
 } from '../../store/todolists-reducer'
 import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from '../../store/tasks-reducer'
-import {TaskStatuses, TodolistType} from '../../api/todolists-api'
+import {TaskStatuses, TodoListType} from '../../api/todolists-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 
 export const TodoLists: React.FC = () => {
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const thunk = fetchTodolistsTC()
+        const thunk = fetchTodoListsTC()
         dispatch(thunk)
     }, [dispatch])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
         const thunk = removeTaskTC(id, todolistId)
         dispatch(thunk)
-    }, [dispatch])
+    }, [dispatch,])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
         const thunk = addTaskTC(title, todolistId)
@@ -46,22 +46,22 @@ export const TodoLists: React.FC = () => {
     }, [dispatch])
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
+        const action = changeTodoListFilterAC(todolistId, value)
         dispatch(action)
     }, [dispatch])
 
     const removeTodolist = useCallback(function (id: string) {
-        const thunk = removeTodolistTC(id)
+        const thunk = removeTodoListTC(id)
         dispatch(thunk)
     }, [dispatch])
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const thunk = changeTodolistTitleTC(id, title)
+        const thunk = changeTodoListTitleTC(id, title)
         dispatch(thunk)
     }, [dispatch])
 
     const addTodolist = useCallback((title: string) => {
-        const thunk = addTodolistTC(title)
+        const thunk = addTodoListTC(title)
         dispatch(thunk)
     }, [dispatch])
 
@@ -72,11 +72,12 @@ export const TodoLists: React.FC = () => {
         </Grid>
         <Grid container spacing={3}>
             {
-                todolists.map(tl => {
+                todoLists.map(tl => {
                     let allTodolistTasks = tasks[tl.id]
 
                     return <Grid item key={tl.id}>
-                        <Paper style={{padding: '10px'}}>
+                        <Paper elevation={10}
+                               style={{padding: '10px', backgroundColor: 'rgba(255,255,255,0.6)'}}>
                             <Todolist
                                 tl={tl}
                                 tasks={allTodolistTasks}

@@ -1,0 +1,12 @@
+.tasksContainer {
+    height: 170px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.taskContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

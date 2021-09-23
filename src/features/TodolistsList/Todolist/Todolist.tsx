@@ -4,15 +4,16 @@ import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task/Task'
-import {TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api'
+import {TaskStatuses, TaskType, TodoListType} from '../../../api/todolists-api'
 import {FilterValuesType} from '../../../store/todolists-reducer'
 import {useDispatch} from 'react-redux'
 import {fetchTasksTC} from '../../../store/tasks-reducer'
+import s from './Todolist.module.css'
 
 type PropsType = {
-    tl: TodolistType
+    tl: TodoListType
     tasks: Array<TaskType>
-    changeFilter: (value: FilterValuesType, todolistId: string) => void
+    changeFilter: (value: FilterValuesType, todoListId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
@@ -30,7 +31,7 @@ export const Todolist = React.memo(function (props: PropsType) {
     useEffect(() => {
         const thunk = fetchTasksTC(props.tl.id)
         dispatch(thunk)
-    }, [])
+    }, [dispatch, props.tl.id])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.tl.id)
@@ -50,17 +51,18 @@ export const Todolist = React.memo(function (props: PropsType) {
     const disabled = props.tl.status === 'loading'
     const deleteButtonStyle = disabled ? {color: 'grey'} : {color: 'darkred'}
 
-    let tasksForTodolist = props.tasks
+    let tasksForTodoList = props.tasks
 
     if (props.tl.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New)
+        tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
     if (props.tl.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
+        tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
     return <div>
-        <h3><EditableSpan value={props.tl.title} onChange={changeTodolistTitle}/>
+        <h3 style={{textAlign: 'center'}}>
+            <EditableSpan value={props.tl.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}
                         disabled={disabled}
                         style={deleteButtonStyle}>
@@ -68,9 +70,9 @@ export const Todolist = React.memo(function (props: PropsType) {
             </IconButton>
         </h3>
         <AddItemForm addItem={addTask} disabled={disabled}/>
-        <div>
+        <div className={s.tasksContainer}>
             {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.tl.id}
+                tasksForTodoList.map(t => <Task key={t.id} task={t} todolistId={props.tl.id}
                                                 removeTask={props.removeTask}
                                                 changeTaskTitle={props.changeTaskTitle}
                                                 changeTaskStatus={props.changeTaskStatus}

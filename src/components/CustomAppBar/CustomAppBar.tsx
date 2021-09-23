@@ -11,14 +11,14 @@ export const CustomAppBar = (props: CustomAppBarPropsType) => {
     const dispatch = useDispatch()
     const logout = useCallback(() => {
         dispatch(logOut())
-    }, [])
+    }, [dispatch])
 
     return <AppBar position="static" style={{background: 'green'}}>
         <Toolbar className={s.appMenu}>
             <IconButton edge="start" color="inherit" aria-label="menu">
                 <Menu/>
             </IconButton>
-            <Typography variant="h6">
+            <Typography variant="h5">
                 {'Todo-lists'}
             </Typography>
             {props.isLoggedIn

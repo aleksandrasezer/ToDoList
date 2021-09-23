@@ -1,13 +1,14 @@
 import {
-    AddTodolistActionType,
-    RemoveTodolistActionType,
-    SetTodolistsActionType,
-    setTodolistStatusAC
+    AddTodoListActionType,
+    RemoveTodoListActionType,
+    SetTodoListsActionType,
+    setTodoListStatusAC
 } from './todolists-reducer'
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../api/todolists-api'
+import {TaskPriorities, TaskStatuses, TaskType, todoListsAPI, UpdateTaskModelType} from '../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from './store'
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {serverErrorHandler} from "../utils/error-handlers";
 
 const initialState: TasksStateType = {}
 
@@ -31,7 +32,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return copyState
         case 'SET-TODOLISTS': {
             const copyState = {...state}
-            action.todolists.forEach(tl => {
+            action.todoLists.forEach(tl => {
                 copyState[tl.id] = []
             })
             return copyState
@@ -56,52 +57,52 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
 // thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    todolistsAPI.getTasks(todolistId)
+    todoListsAPI.getTasks(todolistId)
         .then((res) => {
             const tasks = res.data.items
             const action = setTasksAC(tasks, todolistId)
             dispatch(action)
             dispatch(setAppStatusAC('succeeded'))
         })
-        .catch(() => {
-            dispatch(setAppStatusAC('failed'))
+        .catch((e) => {
+            serverErrorHandler(e, dispatch)
         })
 }
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    dispatch(setTodolistStatusAC(todolistId,'loading'))
-    todolistsAPI.deleteTask(todolistId, taskId)
+    dispatch(setTodoListStatusAC(todolistId, 'loading'))
+    todoListsAPI.deleteTask(todolistId, taskId)
         .then(() => {
             const action = removeTaskAC(taskId, todolistId)
             dispatch(action)
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setTodolistStatusAC(todolistId,'succeeded'))
+            dispatch(setTodoListStatusAC(todolistId, 'succeeded'))
         })
-        .catch(() => {
-            dispatch(setTodolistStatusAC(todolistId,'failed'))
+        .catch((e) => {
+            serverErrorHandler(e, dispatch)
+            dispatch(setTodoListStatusAC(todolistId, 'failed'))
         })
 }
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    dispatch(setTodolistStatusAC(todolistId,'loading'))
-    todolistsAPI.createTask(todolistId, title)
+    dispatch(setTodoListStatusAC(todolistId, 'loading'))
+    todoListsAPI.createTask(todolistId, title)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(setTodolistStatusAC(todolistId,'succeeded'))
+                dispatch(setTodoListStatusAC(todolistId, 'succeeded'))
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
             } else {
                 if (res.data.messages.length) {
-                    dispatch(setAppStatusAC('failed'))
-                    dispatch(setTodolistStatusAC(todolistId,'failed'))
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC('Some error occurred'))
-                    dispatch(setTodolistStatusAC(todolistId,'failed'))
+                    serverErrorHandler(res.data.messages[0], dispatch)
+                    dispatch(setTodoListStatusAC(todolistId, 'failed'))
                 }
-
             }
+        })
+        .catch((e) => {
+            serverErrorHandler(e,dispatch)
+            dispatch(setTodoListStatusAC(todolistId, 'failed'))
         })
 }
 
@@ -109,12 +110,11 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
         dispatch(setAppStatusAC('loading'))
-        dispatch(setTodolistStatusAC(todolistId,'loading'))
+        dispatch(setTodoListStatusAC(todolistId, 'loading'))
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
-            //throw new Error("task not found in the state");
-            console.warn('task not found in the state')
+            dispatch(setAppErrorAC('task not found'))
             return
         }
 
@@ -128,13 +128,16 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             ...domainModel
         }
 
-        todolistsAPI.updateTask(todolistId, taskId, apiModel)
-            .then(res => {
+        todoListsAPI.updateTask(todolistId, taskId, apiModel)
+            .then(() => {
                 const action = updateTaskAC(taskId, domainModel, todolistId)
                 dispatch(action)
             })
+            .catch((e) => {
+                serverErrorHandler(e, dispatch)
+            })
         dispatch(setAppStatusAC('succeeded'))
-        dispatch(setTodolistStatusAC(todolistId,'succeeded'))
+        dispatch(setTodoListStatusAC(todolistId, 'succeeded'))
     }
 
 // types
@@ -153,10 +156,10 @@ type ActionsType =
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof updateTaskAC>
-    | AddTodolistActionType
-    | RemoveTodolistActionType
-    | SetTodolistsActionType
+    | AddTodoListActionType
+    | RemoveTodoListActionType
+    | SetTodoListsActionType
     | ReturnType<typeof setTasksAC>
     | ReturnType<typeof setAppErrorAC>
     | ReturnType<typeof setAppStatusAC>
-    | ReturnType<typeof setTodolistStatusAC>
+    | ReturnType<typeof setTodoListStatusAC>

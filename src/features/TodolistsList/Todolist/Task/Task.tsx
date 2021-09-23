@@ -4,6 +4,7 @@ import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
 import {Delete} from '@material-ui/icons'
 import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
 import {RequestStatusType} from "../../../../store/app-reducer";
+import s from '../Todolist.module.css'
 
 type TaskPropsType = {
     task: TaskType
@@ -28,15 +29,18 @@ export const Task = React.memo((props: TaskPropsType) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId)
     }, [props.task.id, props.todolistId]);
 
-    return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
-        <Checkbox
-            checked={props.task.status === TaskStatuses.Completed}
-            style={checkboxStyle}
-            onChange={onChangeHandler}
-            disabled={disabled}
-        />
+    return <div key={props.task.id} className={s.taskContainer}>
+        <span>
+            <Checkbox
+                checked={props.task.status === TaskStatuses.Completed}
+                style={checkboxStyle}
+                onChange={onChangeHandler}
+                disabled={disabled}
+            />
 
-        <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
+            <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
+        </span>
+
         <IconButton onClick={onClickHandler}
                     disabled={disabled}
                     style={deleteButtonStyle}>

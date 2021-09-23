@@ -42,7 +42,9 @@ export const Login = () => {
     return (
         <FormikProvider value={formik}>
             <div style={{display: "flex",justifyContent: "space-around"}}>
-                <Paper style={{padding: '80px'}} className={s.loginContainer}>
+                <Paper style={{padding: '80px', backgroundColor: 'rgba(255,255,255,0.6)'}}
+                       className={s.loginContainer}
+                       elevation={10}>
                     <h2 style={{color: 'darkGreen'}}> Login </h2>
 
                     <form onSubmit={formik.handleSubmit}>
