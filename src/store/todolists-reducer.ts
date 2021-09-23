@@ -80,15 +80,24 @@ export const addTodolistTC = (title: string) => {
                 dispatch(addTodolistAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             })
+            .catch(() => {
+                dispatch(setAppStatusAC('failed'))
+            })
     }
 }
 export const changeTodolistTitleTC = (id: string, title: string) => {
     return (dispatch: Dispatch<ActionsType>) => {
         dispatch(setAppStatusAC('loading'))
+        dispatch(setTodolistStatusAC(id,'loading'))
         todolistsAPI.updateTodolist(id, title)
             .then(() => {
                 dispatch(changeTodolistTitleAC(id, title))
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(setTodolistStatusAC(id,'succeeded'))
+            })
+            .catch(() => {
+                dispatch(setAppStatusAC('failed'))
+                dispatch(setTodolistStatusAC(id,'failed'))
             })
     }
 }

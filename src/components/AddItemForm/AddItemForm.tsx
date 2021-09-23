@@ -4,13 +4,16 @@ import {AddBox} from '@material-ui/icons';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled: boolean
 }
 
 export const AddItemForm = React.memo(function(props: AddItemFormPropsType) {
     console.log("AddItemForm called")
 
-    let [title, setTitle] = useState("")
-    let [error, setError] = useState<string | null>(null)
+    const [title, setTitle] = useState("")
+    const [error, setError] = useState<string | null>(null)
+
+    const addButtonStyle = props.disabled ? {color: 'grey'} : {color: 'green'}
 
     const addItem = () => {
         if (title.trim() !== "") {
@@ -43,8 +46,8 @@ export const AddItemForm = React.memo(function(props: AddItemFormPropsType) {
                    label="Title"
                    helperText={error}
         />
-        <IconButton style={{ color: 'green' }} onClick={addItem}>
-            <AddBox fontSize='large' />
+        <IconButton style={addButtonStyle} onClick={addItem} disabled={props.disabled}>
+            <AddBox fontSize='large'/>
         </IconButton>
     </div>
 })

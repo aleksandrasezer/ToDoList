@@ -47,7 +47,8 @@ export const Todolist = React.memo(function (props: PropsType) {
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.tl.id), [props.tl.id, props.changeFilter])
     const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.tl.id), [props.tl.id, props.changeFilter])
 
-    const deleteButtonStyle = props.tl.status === 'loading' ? {color: 'grey'} : {color: 'darkred'}
+    const disabled = props.tl.status === 'loading'
+    const deleteButtonStyle = disabled ? {color: 'grey'} : {color: 'darkred'}
 
     let tasksForTodolist = props.tasks
 
@@ -61,18 +62,19 @@ export const Todolist = React.memo(function (props: PropsType) {
     return <div>
         <h3><EditableSpan value={props.tl.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}
-                        disabled={props.tl.status === 'loading'}
+                        disabled={disabled}
                         style={deleteButtonStyle}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} disabled={disabled}/>
         <div>
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.tl.id}
                                                 removeTask={props.removeTask}
                                                 changeTaskTitle={props.changeTaskTitle}
                                                 changeTaskStatus={props.changeTaskStatus}
+                                                listStatus={props.tl.status}
                 />)
             }
         </div>
@@ -80,15 +82,20 @@ export const Todolist = React.memo(function (props: PropsType) {
             <Button variant={props.tl.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
                     color={'default'}
+                    disabled={disabled}
             >All
             </Button>
             <Button variant={props.tl.filter === 'active' ? 'outlined' : 'text'}
                     onClick={onActiveClickHandler}
-                    color={'primary'}>Active
+                    color={'primary'}
+                    disabled={disabled}
+            >Active
             </Button>
             <Button variant={props.tl.filter === 'completed' ? 'outlined' : 'text'}
                     onClick={onCompletedClickHandler}
-                    color={'secondary'}>Completed
+                    color={'secondary'}
+                    disabled={disabled}
+            >Completed
             </Button>
         </div>
     </div>

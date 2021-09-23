@@ -68,7 +68,7 @@ export const TodoLists: React.FC = () => {
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolist} disabled={false}/>
         </Grid>
         <Grid container spacing={3}>
             {
