@@ -1,16 +1,11 @@
 import axios from 'axios'
-import {RequestStatusType} from "../store/app-reducer";
-import {FilterValuesType} from "../store/todolists-reducer";
 
-const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'fd7ee122-ff59-4cee-b5b0-6226ee5b433c'
-    }
-}
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    ...settings
+    withCredentials: true,
+    headers: {
+        'API-KEY': '4f348a4d-b27b-44e2-b016-551b13e8fd56'
+    }
 })
 
 // api
@@ -47,12 +42,10 @@ export type TodoListType = {
     title: string
     addedDate: string
     order: number
-    status: RequestStatusType
-    filter: FilterValuesType
 }
 export type ResponseType<D = {}> = {
     resultCode: number
-    messages: Array<string>
+    messages: string[]
     data: D
 }
 export enum TaskStatuses {

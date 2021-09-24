@@ -4,14 +4,14 @@ import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task/Task'
-import {TaskStatuses, TaskType, TodoListType} from '../../../api/todolists-api'
-import {FilterValuesType} from '../../../store/todolists-reducer'
+import {TaskStatuses, TaskType} from '../../../api/todolists-api'
+import {FilterValuesType, TodoListDomainType} from '../../../store/todolists-reducer'
 import {useDispatch} from 'react-redux'
 import {fetchTasksTC} from '../../../store/tasks-reducer'
 import s from './Todolist.module.css'
 
 type PropsType = {
-    tl: TodoListType
+    tl: TodoListDomainType
     tasks: Array<TaskType>
     changeFilter: (value: FilterValuesType, todoListId: string) => void
     addTask: (title: string, todolistId: string) => void
@@ -76,7 +76,7 @@ export const Todolist = React.memo(function (props: PropsType) {
                                                 removeTask={props.removeTask}
                                                 changeTaskTitle={props.changeTaskTitle}
                                                 changeTaskStatus={props.changeTaskStatus}
-                                                listStatus={props.tl.status}
+                                                listStatus={props.tl.status && props.tl.status}
                 />)
             }
         </div>

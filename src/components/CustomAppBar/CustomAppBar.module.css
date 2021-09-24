@@ -2,3 +2,10 @@
     display: flex;
     justify-content: space-between;
 }
+.menuLink {
+    text-decoration: none;
+    color: grey
+}
+.menuLink:hover {
+    color: green
+}

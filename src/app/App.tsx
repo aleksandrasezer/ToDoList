@@ -19,7 +19,7 @@ function App() {
 
     useEffect(() => {
         dispatch(authMe())
-    }, [])
+    }, [dispatch])
 
     if (!isInitialized) {
         return <Loader />
@@ -30,19 +30,18 @@ function App() {
                 <CustomAppBar isLoggedIn={isLoggedIn}/>
                 {status === 'loading' && <LinearProgress color="secondary"/>}
 
-                {isLoggedIn ?
                     <Container fixed>
                         <HashRouter>
                             <Switch>
                                 <Route exact path={"/"} render={() => <TodoLists/>}/>
                                 <Route path={"/login"} render={() => <Login/>}/>
-                                <Route path={"/404"} render={() => <h1>404 залупа</h1>}/>
+                                <Route path={"/404"} render={() =>
+                                    <h1 style={{textAlign: 'center', color: 'darkred', paddingTop: '100px'}}>404 Error</h1>}/>
                                 <Redirect from={"*"} to={"/404"}/>
                             </Switch>
                         </HashRouter>
                     </Container>
-                    : <Login />
-                }
+
 
                 <ErrorSnackbar/>
 

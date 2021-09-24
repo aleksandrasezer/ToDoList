@@ -3,9 +3,9 @@ import {Button, Checkbox, Paper} from "@material-ui/core";
 import {Field, FormikProvider, useFormik} from 'formik';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../store/store";
-import {TodoLists} from "../../features/TodolistsList/TodolistsList";
 import {logIn} from "../../store/auth-reducer";
 import s from './Login.module.css'
+import {Redirect} from "react-router-dom";
 
 export const Login = () => {
     const dispatch = useDispatch()
@@ -37,13 +37,12 @@ export const Login = () => {
     });
 
     if (isLoggedIn) {
-        return <TodoLists/>
+        return <Redirect to={"/"}/>
     }
     return (
         <FormikProvider value={formik}>
             <div style={{display: "flex",justifyContent: "space-around"}}>
-                <Paper style={{padding: '80px', backgroundColor: 'rgba(255,255,255,0.6)'}}
-                       className={s.loginContainer}
+                <Paper className={s.loginContainer}
                        elevation={10}>
                     <h2 style={{color: 'darkGreen'}}> Login </h2>
 
@@ -73,6 +72,13 @@ export const Login = () => {
                         <Button type='submit' style={{color: 'green'}} variant='outlined'>
                             Login
                         </Button>
+
+                        <div className={s.free}>
+                            To log in get registered <a href='https://social-network.samuraijs.com/' target='_blank'>here</a><br/>
+                            or use common test account credentials: <br/>
+                            Email: <span style={{color: 'black'}}>free@samuraijs.com</span> <br/>
+                            Password: <span style={{color: 'black'}}>free</span>
+                        </div>
 
                     </form>
                 </Paper>

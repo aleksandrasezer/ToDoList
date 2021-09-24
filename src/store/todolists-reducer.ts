@@ -3,14 +3,14 @@ import {Dispatch} from 'redux'
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {serverErrorHandler} from "../utils/error-handlers";
 
-const initialState: Array<TodoListType> = []
+const initialState: Array<TodoListDomainType> = []
 
-export const todoListsReducer = (state: Array<TodoListType> = initialState, action: ActionsType): Array<TodoListType> => {
+export const todoListsReducer = (state: Array<TodoListDomainType> = initialState, action: ActionsType): Array<TodoListDomainType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST':
             return state.filter(tl => tl.id !== action.id)
         case 'ADD-TODOLIST':
-            return [{...action.todolist, filter: 'all'}, ...state]
+            return [{...action.todolist, filter: 'all', status: 'idle'}, ...state]
         case 'CHANGE-TODOLIST-TITLE':
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
         case 'CHANGE-TODOLIST-FILTER':
@@ -18,7 +18,7 @@ export const todoListsReducer = (state: Array<TodoListType> = initialState, acti
         case 'SET-TODOLIST-STATUS':
             return state.map(tl => tl.id === action.id ? {...tl, status: action.status} : tl)
         case 'SET-TODOLISTS':
-            return action.todoLists.map(tl => ({...tl, filter: 'all'}))
+            return action.todoLists.map(tl => ({...tl, filter: 'all', status: 'idle'}))
         default:
             return state
     }
@@ -110,6 +110,10 @@ export type RemoveTodoListActionType = ReturnType<typeof removeTodoListAC>
 export type SetTodoListsActionType = ReturnType<typeof setTodoListsAC>
 export type SetTodoStatusAT = ReturnType<typeof setTodoListStatusAC>
 export type FilterValuesType = 'all' | 'active' | 'completed'
+export type TodoListDomainType = TodoListType & {
+    status: RequestStatusType
+    filter: FilterValuesType
+}
 type ActionsType =
     | RemoveTodoListActionType
     | AddTodoListActionType

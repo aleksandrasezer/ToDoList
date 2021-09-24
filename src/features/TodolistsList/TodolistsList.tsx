@@ -7,17 +7,19 @@ import {
     changeTodoListTitleTC,
     fetchTodoListsTC,
     FilterValuesType,
-    removeTodoListTC,
+    removeTodoListTC, TodoListDomainType,
 } from '../../store/todolists-reducer'
 import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from '../../store/tasks-reducer'
-import {TaskStatuses, TodoListType} from '../../api/todolists-api'
+import {TaskStatuses} from '../../api/todolists-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
+import {Redirect} from "react-router-dom";
 
 export const TodoLists: React.FC = () => {
-    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
+    const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -65,6 +67,9 @@ export const TodoLists: React.FC = () => {
         dispatch(thunk)
     }, [dispatch])
 
+    if(!isLoggedIn) {
+        return <Redirect to={"/login"} />
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>

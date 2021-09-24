@@ -1,9 +1,17 @@
 .loginContainer {
-    max-width: 400px;
-    height: 240px;
     margin-top: 50px;
     text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: rgba(255, 255, 255, 0.6)
 }
+
 .formItem {
-    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.free {
+    color: grey;
+    font-size: smaller;
+    margin-bottom: 20px;
 }
