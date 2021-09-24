@@ -7,7 +7,7 @@ import {AppRootStateType} from "../store/store";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {CustomAppBar} from "../components/CustomAppBar/CustomAppBar";
 import {authMe} from "../store/app-reducer";
-import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from "../components/Login/Login";
 import {Loader} from "../components/Loader/Loader";
 
@@ -29,7 +29,7 @@ function App() {
                 <CustomAppBar isLoggedIn={isLoggedIn}/>
                 {status === 'loading' && <LinearProgress color="secondary"/>}
             <Container fixed>
-                <HashRouter>
+
                     <Switch>
                         <Route exact path={"/"} render={() => <TodoLists/>}/>
                         <Route path={"/login"} render={() => <Login/>}/>
@@ -37,7 +37,7 @@ function App() {
                             <h1 style={{textAlign: 'center', color: 'darkred', paddingTop: '100px'}}>404 Error</h1>}/>
                         <Redirect from={"*"} to={"/404"}/>
                     </Switch>
-                </HashRouter>
+
             </Container>
 
 

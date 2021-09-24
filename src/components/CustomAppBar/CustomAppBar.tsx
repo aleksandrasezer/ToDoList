@@ -42,7 +42,7 @@ export const CustomAppBar = (props: CustomAppBarPropsType) => {
                     }}
                 >
                     <MenuItem >
-                        <a href={'/'} className={s.menuLink}>{`My Todo-lists`}</a></MenuItem>
+                        <NavLink to={'/'} className={s.menuLink}>{`My Todo-lists`}</NavLink></MenuItem>
 
                 </Menu>
             </IconButton>
