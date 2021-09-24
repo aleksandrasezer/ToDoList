@@ -4,6 +4,7 @@ import React, {useCallback} from "react";
 import s from './CustomAppBar.module.css'
 import {useDispatch} from "react-redux";
 import {logOut} from "../../store/auth-reducer";
+import {NavLink} from "react-router-dom";
 
 
 export const CustomAppBar = (props: CustomAppBarPropsType) => {
@@ -41,7 +42,7 @@ export const CustomAppBar = (props: CustomAppBarPropsType) => {
                     }}
                 >
                     <MenuItem >
-                        <a href='/' className={s.menuLink}>{`My Todo-lists`}</a></MenuItem>
+                        <a href={'/'} className={s.menuLink}>{`My Todo-lists`}</a></MenuItem>
 
                 </Menu>
             </IconButton>

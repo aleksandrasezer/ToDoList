@@ -7,7 +7,7 @@ import {AppRootStateType} from "../store/store";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {CustomAppBar} from "../components/CustomAppBar/CustomAppBar";
 import {authMe} from "../store/app-reducer";
-import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from "../components/Login/Login";
 import {Loader} from "../components/Loader/Loader";
 
@@ -22,32 +22,29 @@ function App() {
     }, [dispatch])
 
     if (!isInitialized) {
-        return <Loader />
-    } else {
-        return (
-            <div className="App">
-
+        return <Loader/>
+    }
+    return (
+        <div className="App">
                 <CustomAppBar isLoggedIn={isLoggedIn}/>
                 {status === 'loading' && <LinearProgress color="secondary"/>}
+            <Container fixed>
+                <HashRouter>
+                    <Switch>
+                        <Route exact path={"/"} render={() => <TodoLists/>}/>
+                        <Route path={"/login"} render={() => <Login/>}/>
+                        <Route path={"/404"} render={() =>
+                            <h1 style={{textAlign: 'center', color: 'darkred', paddingTop: '100px'}}>404 Error</h1>}/>
+                        <Redirect from={"*"} to={"/404"}/>
+                    </Switch>
+                </HashRouter>
+            </Container>
 
-                    <Container fixed>
-                        <HashRouter>
-                            <Switch>
-                                <Route exact path={"/"} render={() => <TodoLists/>}/>
-                                <Route path={"/login"} render={() => <Login/>}/>
-                                <Route path={"/404"} render={() =>
-                                    <h1 style={{textAlign: 'center', color: 'darkred', paddingTop: '100px'}}>404 Error</h1>}/>
-                                <Redirect from={"*"} to={"/404"}/>
-                            </Switch>
-                        </HashRouter>
-                    </Container>
 
+            <ErrorSnackbar/>
 
-                <ErrorSnackbar/>
-
-            </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default App
