@@ -1,28 +1,28 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/auth-api";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AppDispatch} from "./store";
 
 
 const initialState = {
     isLoggedIn: false
 }
 
-type InitStateType = typeof initialState
-
-export const authReducer = (state: InitStateType = initialState, action: ActionsType): InitStateType => {
-    switch (action.type) {
-        case 'AUTH/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.isLoggedIn}
-        default:
-            return state
+const slice = createSlice({
+    name: 'auth',
+    initialState: initialState,
+    reducers: {
+        setIsLoggedIn(state, action:PayloadAction<boolean>) {
+            state.isLoggedIn = action.payload
+        },
     }
-}
+})
 
-//action creators
-export const setIsLoggedIn = (isLoggedIn: boolean) => ({type: 'AUTH/SET-IS-LOGGED-IN', isLoggedIn} as const)
+export const authReducer = slice.reducer
+export const {setIsLoggedIn} = slice.actions
 
 //thunk
-export const logOut = () => async (dispatch: Dispatch) => {
+export const logOut = () => async (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC('loading'))
     const logout = await authAPI.logout()
     if (logout.data.resultCode === 0) {
@@ -32,7 +32,7 @@ export const logOut = () => async (dispatch: Dispatch) => {
         dispatch(setAppStatusAC('failed'))
     }
 }
-export const logIn = (values: UserLoginData) => async (dispatch: Dispatch) => {
+export const logIn = (values: UserLoginData) => async (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC('loading'))
     const login = await authAPI.login(values.email,values.password,values.rememberMe)
     if (login.data.resultCode === 0) {
@@ -45,8 +45,6 @@ export const logIn = (values: UserLoginData) => async (dispatch: Dispatch) => {
 }
 
 //types
-type ActionsType = ReturnType<typeof setIsLoggedIn>
-
 export type UserLoginData = {
     email: string
     password: string

@@ -1,6 +1,7 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/auth-api";
 import {setIsLoggedIn} from "./auth-reducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AppDispatch} from "./store";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -10,28 +11,27 @@ const initialState = {
     isInitialized: false,
 }
 
-type InitialStateType = typeof initialState
-
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        case 'APP/SET-IS-INITIALIZED':
-            return {...state, isInitialized: action.isInitialized}
-        default:
-            return state
+const slice = createSlice({
+    name: 'app',
+    initialState: initialState,
+    reducers: {
+        setAppStatusAC(state,action:PayloadAction<RequestStatusType>) {
+            state.status = action.payload
+        },
+        setIsInitializedAC(state,action:PayloadAction<boolean>) {
+            state.isInitialized = action.payload
+        },
+        setAppErrorAC(state,action:PayloadAction<string|null>) {
+            state.error = action.payload
+        },
     }
-}
+})
 
 //action creators
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
-export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-IS-INITIALIZED', isInitialized} as const)
-export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-
+export const appReducer = slice.reducer
+export const {setAppStatusAC, setIsInitializedAC, setAppErrorAC} = slice.actions
 //thunk
-export const authMe = () => async (dispatch: Dispatch) => {
+export const authMe = () => async (dispatch: AppDispatch) => {
     try {
         const response = await authAPI.authMe()
         if (response.data.resultCode === 0) {
@@ -49,6 +49,3 @@ export const authMe = () => async (dispatch: Dispatch) => {
 export type SetAppStatusAT = ReturnType<typeof setAppStatusAC>
 export type SetAppErrorAT = ReturnType<typeof setAppErrorAC>
 
-type ActionsType =
-    SetAppStatusAT | SetAppErrorAT
-    | ReturnType<typeof setIsInitializedAC>
