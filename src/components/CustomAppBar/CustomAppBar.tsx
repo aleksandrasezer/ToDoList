@@ -42,13 +42,13 @@ export const CustomAppBar = (props: CustomAppBarPropsType) => {
                     }}
                 >
                     <MenuItem >
-                        <NavLink to={'/'} className={s.menuLink}>{`My Todo-lists`}</NavLink></MenuItem>
+                        <NavLink to={'/'} className={s.menuLink}>{`My Planner`}</NavLink></MenuItem>
 
                 </Menu>
             </IconButton>
             </div>
             <Typography variant="h5">
-                {'Todo-lists'}
+                {'My Planner'}
             </Typography>
             {props.isLoggedIn
                 ? <Button color={"inherit"} variant={"outlined"} onClick={logout}>
