@@ -45,7 +45,9 @@ export const authMe = () => async (dispatch: AppDispatch) => {
     }
 }
 
-//types
+//types for error handler
 export type SetAppStatusAT = ReturnType<typeof setAppStatusAC>
 export type SetAppErrorAT = ReturnType<typeof setAppErrorAC>
+//type for test
+export type InitAppStateType = typeof initialState
 
