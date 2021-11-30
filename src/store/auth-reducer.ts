@@ -3,7 +3,6 @@ import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch} from "./store";
 
-
 const initialState = {
     isLoggedIn: false
 }

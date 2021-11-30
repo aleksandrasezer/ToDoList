@@ -10,21 +10,7 @@ import {useDispatch} from 'react-redux'
 import {fetchTasksTC} from '../../../store/tasks-reducer'
 import s from './Todolist.module.css'
 
-type PropsType = {
-    tl: TodoListDomainType
-    tasks: Array<TaskType>
-    changeFilter: (value: FilterValuesType, todoListId: string) => void
-    addTask: (title: string, todolistId: string) => void
-    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    removeTask: (taskId: string, todolistId: string) => void
-    removeTodolist: (id: string) => void
-    changeTodolistTitle: (id: string, newTitle: string) => void
-
-}
-
 export const Todolist = React.memo(function (props: PropsType) {
-    console.log('Todolist called')
 
     const dispatch = useDispatch()
 
@@ -52,7 +38,6 @@ export const Todolist = React.memo(function (props: PropsType) {
     const deleteButtonStyle = disabled ? {color: 'grey'} : {color: 'darkred'}
 
     let tasksForTodoList = props.tasks
-
     if (props.tl.filter === 'active') {
         tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
@@ -102,5 +87,19 @@ export const Todolist = React.memo(function (props: PropsType) {
         </div>
     </div>
 })
+
+//types
+type PropsType = {
+    tl: TodoListDomainType
+    tasks: Array<TaskType>
+    changeFilter: (value: FilterValuesType, todoListId: string) => void
+    addTask: (title: string, todolistId: string) => void
+    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    removeTodolist: (id: string) => void
+    changeTodolistTitle: (id: string, newTitle: string) => void
+
+}
 
 

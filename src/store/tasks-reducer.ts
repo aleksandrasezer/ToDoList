@@ -108,7 +108,6 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: AppDi
         })
 }
 
-
 export const updateTaskTC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: AppDispatch, getState: () => AppRootStateType) => {
         dispatch(setAppStatusAC('loading'))
@@ -119,7 +118,6 @@ export const updateTaskTC = (taskId: string, model: UpdateDomainTaskModelType, t
             dispatch(setAppErrorAC('task not found'))
             return
         }
-
         const apiModel: UpdateTaskModelType = {
             deadline: task.deadline,
             description: task.description,
@@ -129,7 +127,6 @@ export const updateTaskTC = (taskId: string, model: UpdateDomainTaskModelType, t
             status: task.status,
             ...model
         }
-
         todoListsAPI.updateTask(todolistId, taskId, apiModel)
             .then(() => {
                 const action = updateTaskAC({taskId, model, todolistId})

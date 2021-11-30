@@ -11,7 +11,6 @@ export const Login = () => {
     const dispatch = useDispatch()
     const {isLoggedIn} = useSelector((state: AppRootStateType) => state.auth)
 
-
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -63,23 +62,19 @@ export const Login = () => {
                                 error={formik.touched.password ? formik.errors.password : null}
                                 name={'password'}
                             /></div>
-
                         <div>
                             <Checkbox name='rememberMe' style={{color: 'green'}}/>
                             Remember me
                         </div>
-
                         <Button type='submit' style={{color: 'green'}} variant='outlined'>
                             Login
                         </Button>
-
                         <div className={s.free}>
                             To log in get registered <a href='https://social-network.samuraijs.com/' target='_blank'>here</a><br/>
                             or use common test account credentials: <br/>
                             Email: <span style={{color: 'black'}}>free@samuraijs.com</span> <br/>
                             Password: <span style={{color: 'black'}}>free</span>
                         </div>
-
                     </form>
                 </Paper>
             </div>
@@ -87,7 +82,7 @@ export const Login = () => {
     )
 }
 
-
+//types
 type LoginErrorType = {
     email?: string
     password?: string

@@ -43,7 +43,6 @@ export const CustomAppBar = (props: CustomAppBarPropsType) => {
                 >
                     <MenuItem >
                         <NavLink to={'/'} className={s.menuLink}>{`My Planner`}</NavLink></MenuItem>
-
                 </Menu>
             </IconButton>
             </div>

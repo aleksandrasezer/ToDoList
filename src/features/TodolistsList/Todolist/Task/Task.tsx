@@ -6,14 +6,6 @@ import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
 import {RequestStatusType} from "../../../../store/app-reducer";
 import s from '../Todolist.module.css'
 
-type TaskPropsType = {
-    task: TaskType
-    listStatus: RequestStatusType
-    todolistId: string
-    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    removeTask: (taskId: string, todolistId: string) => void
-}
 export const Task = React.memo((props: TaskPropsType) => {
     const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId]);
     const disabled = props.listStatus === 'loading'
@@ -40,7 +32,6 @@ export const Task = React.memo((props: TaskPropsType) => {
 
             <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
         </span>
-
         <IconButton onClick={onClickHandler}
                     disabled={disabled}
                     style={deleteButtonStyle}>
@@ -48,3 +39,13 @@ export const Task = React.memo((props: TaskPropsType) => {
         </IconButton>
     </div>
 })
+
+//types
+type TaskPropsType = {
+    task: TaskType
+    listStatus: RequestStatusType
+    todolistId: string
+    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
+}

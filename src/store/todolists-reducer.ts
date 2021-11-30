@@ -41,7 +41,7 @@ const slice = createSlice({
 export const todoListsReducer = slice.reducer
 export const {addTodoListAC,removeTodoListAC,setTodoListsAC,
     changeTodoListFilterAC,setTodoListStatusAC,changeTodoListTitleAC} = slice.actions
-
+//thunk
 export const fetchTodoListsTC = () => {
     return (dispatch: AppDispatch) => {
         dispatch(setAppStatusAC('loading'))
